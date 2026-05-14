@@ -27,7 +27,7 @@ function getCoords(station) {
   return { cx: x, cy: y };
 }
 
-map.on('load', () => {
+map.on('load', async () => {
   map.addSource('boston_route', {
     type: 'geojson',
     data: 'https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson'
