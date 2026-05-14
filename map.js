@@ -65,8 +65,8 @@ map.on('load', async () => {
     console.error('Error loading JSON:', error); 
   }
   
-  const svg = d3.select('#map').select('svg');
-
+  const svg = d3.select('#map').append('svg');
+  
   const circles = svg
     .selectAll('circle')
     .data(stations)
