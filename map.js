@@ -2,8 +2,11 @@ import mapboxgl from 'https://cdn.jsdelivr.net/npm/mapbox-gl@2.15.0/+esm';
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
 
 console.log('Mapbox GL JS Loaded:', mapboxgl);
+
+// Your Access Token
 mapboxgl.accessToken = 'pk.eyJ1IjoicGxheWZvcmxvdmUiLCJhIjoiY21wNG9wOHdwMDNhcjJyb3E3ODVlaDlkaSJ9.VWm4YntvThOWrHCLLPzb_w';
 
+// Initialize Map
 const map = new mapboxgl.Map({
   container: 'map', 
   style: 'mapbox://styles/playforlove/cmp4xtupq003601shdgtceum7', 
@@ -17,7 +20,7 @@ map.addControl(new mapboxgl.NavigationControl());
 
 const bikeLaneStyle = {
   'line-color': '#32D400',  
-  'line-width': 3,         
+  'line-width': 3,          
   'line-opacity': 0.4       
 };
 
@@ -28,11 +31,11 @@ function getCoords(station) {
 }
 
 map.on('load', async () => {
+  // Add Bike Lanes
   map.addSource('boston_route', {
     type: 'geojson',
     data: 'https://bostonopendata-boston.opendata.arcgis.com/datasets/boston::existing-bike-network-2022.geojson'
   });
-
   map.addLayer({
     id: 'bike-lanes-boston',
     type: 'line',
@@ -44,7 +47,6 @@ map.on('load', async () => {
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/main/Recreation/Bike_Facilities/RECREATION_BikeFacilities.geojson'
   });
-
   map.addLayer({
     id: 'bike-lanes-cambridge',
     type: 'line',
@@ -52,27 +54,26 @@ map.on('load', async () => {
     paint: bikeLaneStyle 
   });
 
+  // Fetch Station Data
   let stations = [];
   try {
     const jsonurl = 'https://dsc106.com/labs/lab07/data/bluebikes-stations.json';
     const jsonData = await d3.json(jsonurl);
-    
     console.log('Loaded JSON Data:', jsonData); 
     stations = jsonData.data.stations;
-    console.log('Stations Array:', stations);
-
   } catch (error) {
     console.error('Error loading JSON:', error); 
   }
   
+  // DYNAMICALLY CREATE THE SVG HERE
   const svg = d3.select('#map').append('svg');
-  
+
   const circles = svg
     .selectAll('circle')
     .data(stations)
     .enter()
     .append('circle')
-    .attr('r', 5)               
+    .attr('r', 5)                
     .attr('fill', 'steelblue') 
     .attr('stroke', 'white')    
     .attr('stroke-width', 1)    
@@ -90,5 +91,4 @@ map.on('load', async () => {
   map.on('zoom', updatePositions);     
   map.on('resize', updatePositions);   
   map.on('moveend', updatePositions);
-
 });
