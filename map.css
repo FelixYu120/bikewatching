@@ -84,6 +84,11 @@ header time {
   font-weight: bold;
   font-size: 0.85rem;
 }
+#map svg circle:hover {
+  stroke: red !important;
+  stroke-width: 5px !important;
+  fill-opacity: 1 !important;
+}
 
 /* Align the text inside the blocks */
 .legend > div:nth-child(1) { text-align: left; }
