@@ -84,10 +84,21 @@ header time {
   font-weight: bold;
   font-size: 0.85rem;
 }
-#map svg circle:hover {
-  stroke: red !important;
-  stroke-width: 5px !important;
-  fill-opacity: 1 !important;
+
+#tooltip {
+  position: absolute;
+  display: none; /* Hidden until you hover */
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  pointer-events: none; /* Prevents the tooltip from blocking the mouse */
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* Align the text inside the blocks */
