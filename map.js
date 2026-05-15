@@ -134,8 +134,8 @@ map.on('load', async () => {
   // --- STEP 6.1: Define Quantize Scale ---
   let stationFlow = d3.scaleQuantize().domain([0, 1]).range([0, 0.5, 1]);
   
-  const svg = d3.select('#map').append('svg');
-
+  const svg = d3.select(map.getCanvasContainer()).append('svg');
+  
   const circles = svg
     .selectAll('circle')
     .data(stations, (d) => d.short_name) 
