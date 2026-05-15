@@ -136,7 +136,7 @@ map.on('load', async () => {
   
   const svg = d3.select(map.getCanvasContainer()).append('svg');
   
-  const circles = svg
+  let circles = svg
     .selectAll('circle')
     .data(stations, (d) => d.short_name) 
     .enter()
@@ -165,16 +165,23 @@ map.on('load', async () => {
   map.on('resize', updatePositions);   
   map.on('moveend', updatePositions);
 
-  function updateScatterPlot(timeFilter) {
+function updateScatterPlot(timeFilter) {
     const filteredStations = computeStationTraffic(rawStations, timeFilter);
     timeFilter === -1 ? radiusScale.range([0, 25]) : radiusScale.range([3, 50]);
 
-    circles
+    // Add "circles =" at the beginning of this block!
+    circles = circles
       .data(filteredStations, (d) => d.short_name) 
-      .join('circle')
+      .join('circle'); // Split the chain here to ensure the variable updates
+
+    // Now update the styling
+    circles
       .attr('r', (d) => radiusScale(d.totalTraffic))
-      // --- STEP 6.1: Update CSS Variable on Filter ---
-      .style('--departure-ratio', (d) => stationFlow(d.departures / d.totalTraffic))
+      // Add a fallback for NaN if traffic is 0!
+      .style('--departure-ratio', (d) => {
+          let ratio = d.totalTraffic === 0 ? 0.5 : d.departures / d.totalTraffic;
+          return stationFlow(ratio);
+      })
       .each(function (d) {        
         d3.select(this)
           .select('title')
