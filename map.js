@@ -147,11 +147,19 @@ map.on('load', async () => {
     .attr('stroke', 'white')    
     .attr('stroke-width', 1)    
     .attr('opacity', 0.8)        
-    .each(function (d) {        
-      d3.select(this)
-        .append('title')
+    .on('mouseenter', (event, d) => {
+      d3.select('#tooltip')
+        .style('display', 'block')
         .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
-    });      
+    })
+    .on('mousemove', (event) => {
+      d3.select('#tooltip')
+        .style('left', (event.pageX + 15) + 'px')
+        .style('top', (event.pageY + 15) + 'px');
+    })
+    .on('mouseleave', () => {
+      d3.select('#tooltip').style('display', 'none');
+    });   
 
   function updatePositions() {
     circles
@@ -182,10 +190,18 @@ function updateScatterPlot(timeFilter) {
           let ratio = d.totalTraffic === 0 ? 0.5 : d.departures / d.totalTraffic;
           return stationFlow(ratio);
       })
-      .each(function (d) {        
-        d3.select(this)
-          .select('title')
+      .on('mouseenter', (event, d) => {
+        d3.select('#tooltip')
+          .style('display', 'block')
           .text(`${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`);
+      })
+      .on('mousemove', (event) => {
+        d3.select('#tooltip')
+          .style('left', (event.pageX + 15) + 'px')
+          .style('top', (event.pageY + 15) + 'px');
+      })
+      .on('mouseleave', () => {
+        d3.select('#tooltip').style('display', 'none');
       });
   }
 
